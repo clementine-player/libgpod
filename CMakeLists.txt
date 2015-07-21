@@ -58,7 +58,7 @@ if (${HAVE_LIBIMOBILEDEVICE})
 endif ()
 
 configure_file(config.h.in config.h)
-configure_file(libgpod-1.0.pc.in libgpod-1.0.pc)
+configure_file(libgpod-1.0.pc.in libgpod-1.0.pc @ONLY)
 
 include_directories(${GLIB_INCLUDE_DIRS})
 

@@ -32,9 +32,14 @@ set(SOURCES
   src/itdb_plist.c
 )
 
-pkg_check_modules(GLIB REQUIRED glib-2.0)
-pkg_check_modules(LIBIMOBILEDEVICE libimobiledevice-1.0)
 pkg_check_modules(GDK_PIXBUF gdk-pixbuf-2.0)
+pkg_check_modules(GLIB REQUIRED glib-2.0)
+pkg_check_modules(GMODULE REQUIRED gmodule-2.0)
+pkg_check_modules(GOBJECT REQUIRED gobject-2.0)
+pkg_check_modules(LIBIMOBILEDEVICE libimobiledevice-1.0)
+pkg_check_modules(LIBPLIST REQUIRED libplist)
+pkg_check_modules(SQLITE3 REQUIRED sqlite3)
+pkg_check_modules(ZLIB REQUIRED zlib)
 check_include_files(unistd.h HAVE_UNISTD_H)
 
 option(ENABLE_GDKPIXBUF
@@ -61,6 +66,17 @@ configure_file(config.h.in config.h)
 configure_file(libgpod-1.0.pc.in libgpod-1.0.pc @ONLY)
 
 include_directories(${GLIB_INCLUDE_DIRS})
+include_directories(${GMODULE_INCLUDE_DIRS})
+include_directories(${GOBJECT_INCLUDE_DIRS})
+include_directories(${LIBPLIST_INCLUDE_DIRS})
+include_directories(${SQLITE3_INCLUDE_DIRS})
+include_directories(${ZLIB_INCLUDE_DIRS})
+link_directories(${GLIB_LIBRARY_DIRS})
+link_directories(${GMODULE_LIBRARY_DIRS})
+link_directories(${GOBJECT_LIBRARY_DIRS})
+link_directories(${LIBPLIST_LIBRARY_DIRS})
+link_directories(${SQLITE3_LIBRARY_DIRS})
+link_directories(${ZLIB_LIBRARY_DIRS})
 
 if (${GDK_PIXBUF_FOUND})
   include_directories(${GDK_PIXBUF_INCLUDE_DIRS})
@@ -74,19 +90,25 @@ add_library(gpod SHARED ${SOURCES})
 
 target_link_libraries(gpod
   ${GLIB_LIBRARIES}
-  ${GDK_PIXBUF_LIBRARIES}
-  ${LIBIMOBILEDEVICE_LIBRARIES}
+  ${GMODULE_LIBRARIES}
+  ${GOBJECT_LIBRARIES}
+  ${LIBPLIST_LIBRARIES}
+  ${SQLITE3_LIBRARIES}
+  ${ZLIB_LIBRARIES}
 )
 
 if (${HAVE_LIBIMOBILEDEVICE})
   target_link_libraries(gpod ${LIBIMOBILEDEVICE_LIBRARIES})
+  link_directories(${LIBIMOBILEDEVICE_LIBRARY_DIR})
 endif ()
 
 if (${HAVE_GDKPIXBUF})
   target_link_libraries(gpod ${GDK_PIXBUF_LIBRARIES})
+  link_directories(${GDK_PIXBUF_LIBRARY_DIR})
 endif ()
 
 install(TARGETS gpod
+  RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )
 

@@ -36,7 +36,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#if HAVE_GDKPIXBUF
+#ifdef HAVE_GDKPIXBUF
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #endif
 #include <glib/gi18n-lib.h>
@@ -300,7 +300,7 @@ itdb_artwork_set_thumbnail_from_data (Itdb_Artwork *artwork,
 #endif
 }
 
-#if HAVE_GDKPIXBUF
+#ifdef HAVE_GDKPIXBUF
 static guchar *
 unpack_RGB_565 (guint16 *pixels, guint bytes_len, guint byte_order)
 {

@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
+include(CheckIncludeFiles)
 include(FindPkgConfig)
 
 set(SOURCES
@@ -31,17 +32,34 @@ set(SOURCES
 )
 
 pkg_check_modules(GLIB REQUIRED glib-2.0)
+pkg_check_modules(LIBIMOBILEDEVICE libimobiledevice-1.0)
+pkg_check_modules(GDK_PIXBUF gdk-pixbuf-2.0)
+
+check_include_files(unistd.h HAVE_UNISTD_H)
+
+set(HAVE_GDKPIXBUF ${GDK_PIXBUF_FOUND})
 
 set(WITH_INTERNAL_GCHECKSUM 0)
 set(LIBGPOD_BLOB_DIR "${CMAKE_INSTALL_PREFIX}/libgpod")
+set(VERSION 0.8.0)
 
-configure_file(
-  "config.h.in"
-  "config.h")
+configure_file(config.h.in config.h)
+configure_file(libgpod-1.0.pc.in libgpod-1.0.pc)
 
 include_directories(${GLIB_INCLUDE_DIRS})
+
+if (${GDK_PIXBUF_FOUND})
+  include_directories(${GDK_PIXBUF_INCLUDE_DIRS})
+endif ()
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_definitions(-DGETTEXT_PACKAGE="\\"libgpod\\"")
 
 add_library(gpod ${SOURCES})
+
+target_link_libraries(gpod
+  ${GLIB_LIBRARIES}
+  ${GDK_PIXBUF_LIBRARIES}
+  ${LIBIMOBILEDEVICE_LIBRARIES}
+)

@@ -63,3 +63,18 @@ target_link_libraries(gpod
   ${GDK_PIXBUF_LIBRARIES}
   ${LIBIMOBILEDEVICE_LIBRARIES}
 )
+
+install(TARGETS gpod
+  LIBRARY DESTINATION lib
+)
+
+install(
+  DIRECTORY src/
+  DESTINATION include/gpod-1.0/gpod
+  FILES_MATCHING PATTERN itdb.h
+)
+
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/libgpod-1.0.pc
+  DESTINATION lib/pkgconfig
+)

@@ -33,6 +33,8 @@
 |  $Id$
 */
 
+#include <config.h>
+
 #include "pixmaps.h"
 
 #ifdef HAVE_GDKPIXBUF

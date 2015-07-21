@@ -49,6 +49,14 @@ set(WITH_INTERNAL_GCHECKSUM 0)
 set(LIBGPOD_BLOB_DIR "${CMAKE_INSTALL_PREFIX}/libgpod")
 set(VERSION 0.8.0)
 
+if (${HAVE_GDKPIXBUF})
+  set(GDKPIXBUF_REQ "gdk-pixbuf-2.0")
+endif ()
+
+if (${HAVE_LIBIMOBILEDEVICE})
+  set(LIBIMOBILEDEVICE_REQ "libimobiledevice-1.0")
+endif ()
+
 configure_file(config.h.in config.h)
 configure_file(libgpod-1.0.pc.in libgpod-1.0.pc)
 

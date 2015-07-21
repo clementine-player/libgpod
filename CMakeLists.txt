@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
+cmake_policy(SET CMP0012 NEW)
 
 include(CheckIncludeFiles)
 include(FindPkgConfig)
@@ -34,10 +35,15 @@ set(SOURCES
 pkg_check_modules(GLIB REQUIRED glib-2.0)
 pkg_check_modules(LIBIMOBILEDEVICE libimobiledevice-1.0)
 pkg_check_modules(GDK_PIXBUF gdk-pixbuf-2.0)
-
 check_include_files(unistd.h HAVE_UNISTD_H)
 
-set(HAVE_GDKPIXBUF ${GDK_PIXBUF_FOUND})
+option(ENABLE_GDKPIXBUF
+  "Whether to include gdk-pixbuf support" ${GDK_PIXBUF_FOUND})
+option(ENABLE_LIBIMOBILEDEVICE
+  "Whether to include libimobiledevice support" ${LIBIMOBILEDEVICE_FOUND})
+
+set(HAVE_GDKPIXBUF ${ENABLE_GDKPIXBUF})
+set(HAVE_LIBIMOBILEDEVICE ${ENABLE_LIBIMOBILEDEVICE})
 
 set(WITH_INTERNAL_GCHECKSUM 0)
 set(LIBGPOD_BLOB_DIR "${CMAKE_INSTALL_PREFIX}/libgpod")
@@ -63,6 +69,14 @@ target_link_libraries(gpod
   ${GDK_PIXBUF_LIBRARIES}
   ${LIBIMOBILEDEVICE_LIBRARIES}
 )
+
+if (${HAVE_LIBIMOBILEDEVICE})
+  target_link_libraries(gpod ${LIBIMOBILEDEVICE_LIBRARIES})
+endif ()
+
+if (${HAVE_GDKPIXBUF})
+  target_link_libraries(gpod ${GDK_PIXBUF_LIBRARIES})
+endif ()
 
 install(TARGETS gpod
   LIBRARY DESTINATION lib

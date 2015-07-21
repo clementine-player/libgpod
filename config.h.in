@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #cmakedefine HAVE_GDKPIXBUF
+#cmakedefine HAVE_LIBIMOBILEDEVICE
 #cmakedefine HAVE_UNISTD_H
 #cmakedefine WITH_INTERNAL_GCHECKSUM
 

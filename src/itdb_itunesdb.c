@@ -1461,7 +1461,10 @@ Itdb_iTunesDB *itdb_new (void)
     static GOnce g_type_init_once = G_ONCE_INIT;
     Itdb_iTunesDB *itdb;
 
+#if !GLIB_CHECK_VERSION(2, 36, 0)
+    // Deprecated in glib 2.36.0
     g_once (&g_type_init_once, (GThreadFunc)g_type_init, NULL);
+#endif  // GLIB_CHECK_VERSION
     itdb = g_new0 (Itdb_iTunesDB, 1);
     itdb->priv = g_new0 (Itdb_iTunesDB_Private, 1);
     itdb->device = itdb_device_new ();

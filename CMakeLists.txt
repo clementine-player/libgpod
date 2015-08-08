@@ -62,6 +62,12 @@ if (${HAVE_LIBIMOBILEDEVICE})
   set(LIBIMOBILEDEVICE_REQ "libimobiledevice-1.0")
 endif ()
 
+if (WIN32)
+  set(LIBRARY_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/bin")
+else ()
+  set(LIBRARY_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/lib")
+endif ()
+
 configure_file(config.h.in config.h)
 configure_file(libgpod-1.0.pc.in libgpod-1.0.pc @ONLY)
 
